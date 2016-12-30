@@ -1,0 +1,15 @@
+##set working directory and place the file household_power_consumption in your current working directory
+mydata<-read.table("household_power_consumption.txt",header = T,sep = ";",stringsAsFactors = F,dec = ",")
+mydata1=mydata[mydata$Date %in% c("1/2/2007","2/2/2007"),]
+datetime=strptime(paste(mydata1$Date, mydata1$Time,sep = " " ), "%d/%m/%Y %H:%M:%S")
+x=as.numeric(mydata1$Global_active_power)
+png("plot4.png",width = 480,height = 480)
+par(mfrow=c(2,2),mar=c(4,4,2,1),oma=c(0,0,2,0))
+plot(datetime,x,type = "l",xlab = "",ylab = "Global Active Power(kilowatts)")
+plot(datetime,mydata1$Voltage,type = "l",xlab = "datetime",ylab = "Voltage")
+with(mydata1,plot(datetime,Sub_metering_1,type = "l",xlab = "",ylab = "Energy sub metering"))
+with(mydata1,points(datetime,Sub_metering_2,type = "l",col = "orange"))
+with(mydata1,points(datetime,Sub_metering_3,type = "l",col = "blue"))
+legend("topright",xjust = 1,yjust = 1 ,pch= "_",col = c("black","orange","blue"),legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+plot(datetime,mydata1$Global_reactive_power,type = "l",xlab = "datetime",ylab = "Global_reactive_power")
+dev.off()
